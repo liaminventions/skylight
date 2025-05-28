@@ -1,0 +1,5 @@
+#!/bin/bash 
+set -ex
+url=$(wl-paste)
+cd ~/Music
+yt-dlp --extract-audio --audio-format flac --audio-quality 0 --no-playlist "$url"

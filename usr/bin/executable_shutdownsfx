@@ -1,0 +1,3 @@
+#!/bin/sh
+mplayer /usr/share/sounds/shutdown.m4a
+#play /usr/share/sounds/shutdown.m4a

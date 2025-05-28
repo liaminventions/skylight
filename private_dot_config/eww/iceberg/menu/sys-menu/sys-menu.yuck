@@ -1,0 +1,206 @@
+(defwidget sys-menu-main[]
+   (revealer
+      :transition "slidedown"
+      :reveal system-menu
+      :duration "650ms"
+   (box :class "menu sys-menu"
+       :orientation "v"
+       :space-evenly false
+       :spacing 15
+    (upanel)
+    (panel)
+    (powermenu))))
+(defvar system-menu false)
+
+(defwidget user[] 
+  (box :class "user"
+       :space-evenly false
+       :orientation "h"
+       :hexpand true
+       :spacing 15
+    (box :class "user-pfp" :halign "start" :valign "center" :style "background-image: url('assets/pfp2v1.png');")
+    (box :class "user-details"
+         :orientation "v"
+         :space-evenly false
+         :valign "center"
+      (label :class "user-name" :halign "start" :text uname)
+      ))) 
+
+(defpoll uname :interval "1h" "echo 'Guest'")
+(defpoll uptime-val :interval "30s" "uptime -p")
+(defpoll pkgs-val :interval "2m" "pacman -Q | wc -l | tail -1 | sed 's/$/ packages installed (pacman)/'")
+(defpoll pkgs-val-flatpak :interval "2m" "flatpak list -a | wc -l | tail -1 | sed 's/$/ packages installed (flatpak)/'")
+
+(defwidget upanel[]
+  (box :class "upanel"
+       :spacing 15
+       :space-evenly false
+    (user)
+    (usr-btns)
+))
+
+(defwidget panel[]
+  (box :class "panel"
+       :spacing 15
+       :space-evenly false
+    (stats)
+    (sys-btns)))
+
+(defwidget stats[]
+  (box :class "stats"
+       :spacing 15
+    (v-imagemeter :name "ram" :active false :min 0 :max 101 :val ram-val :path "/home/guest/.icons/Windows-7-master/devices/gnome-dev-memory.png")
+    (v-imagemeter :name "cpu" :active false :min 0 :max 101 :val cpu-val :path "/home/guest/.icons/Windows-7-master/scalable/places/computer.svg")
+    (v-imagemeter :name "dsk" :active false :min 0 :max 101 :val dsk-val :path "/home/guest/.icons/Windows-7-master/devices/drive-harddisk.png")
+    ))
+
+(deflisten ram-val "scripts/stats follow ram")
+(deflisten cpu-val "scripts/stats follow cpu")
+(deflisten dsk-val "scripts/stats follow dsk")
+
+(deflisten bucklev "scripts/sys buckle")
+(deflisten playv "scripts/sys play")
+(deflisten musicv "scripts/sys music")
+
+(deflisten vol "scripts/sys vol")
+
+(defwidget usr-btns[]
+  (box :class "usr-btns"
+       :orientation "v"
+       :hexpand true
+       :spacing 15
+    (box :class "row"
+	 :spacing 15
+      (button :class "play play-${playv.state}" :timeout "5s" :tooltip "Sound Effects" :onclick "~/play toggle" 
+	(image
+	  :path "/home/guest/.icons/Windows-7-master/apps/kcmsound.png"
+	  :image-height 25))
+      (button :class "buckle buckle-${bucklev.state}" :timeout "5s" :tooltip "Toggle Typing Sound" :onclick "scripts/sys toggle-buckle" 
+	(image
+	  :path "/home/guest/.icons/Windows-7-master/devices/gnome-dev-keyboard.png"
+	  :image-height 25)
+	))
+    (box :class "row"
+	 :spacing 15
+      (button :class "music music-${musicv.state}" :timeout "5s" :tooltip "Toggle Music" :onclick "scripts/sys toggle-music & disown" 
+	(image
+	  :path "/home/guest/.icons/Windows-7-master/actions/music-library.png"
+	  :image-height 25))
+      (button :class "vol" :timeout "5s" :tooltip "Adjust Sound Effects Volume" :onclick "~/adj.sh" 
+	(image
+	  :path "${vol.path}"
+	  :image-height 25)
+	))
+))
+
+(defwidget sys-btns[]
+  (box :class "sys-btns"
+       :orientation "v"
+       :hexpand true
+       :spacing 15
+    (box :class "row"
+         :spacing 15
+      (button :class "wifi wifi-${wifi.state}" :timeout "5s" :tooltip "WiFi" :onclick "scripts/sys toggle-wifi"
+        (image
+          :path "/home/guest/.icons/Windows-7-master/scalable/places/network-workgroup.svg"
+          :image-height 25))
+      (button :class "air air-${air.state}" :timeout "5s" :tooltip "Airplane Mode" :onclick "scripts/sys toggle-air" (image
+          :path "/home/guest/airplane.png"
+          :image-height 25))
+      (button :class "launch" :timeout "5s" :tooltip "Open Launcher" :onclick "wofi"
+        (image
+          :path "/home/guest/menu.png"
+          :image-height 25)))
+    (box :class "row"
+         :spacing 15
+      (button :class "night night-${night.state}" :tooltip "Night Mode" :onclick "scripts/sys toggle-night"
+        (image
+          :path "/home/guest/.icons/Windows-7-master/status/Gnome-weather-clear-night.png"
+          :image-height 25))
+      (button :class "blue blue-${blue.state}" :tooltip "Bluetooth™" :onclick "scripts/sys toggle-blue"
+        (image
+          :path "/home/guest/.icons/Windows-7-master/apps/bluetooth.png"
+          :image-height 25))
+      (button
+        :class "scr"
+        :tooltip "Take Screenshot"
+        :timeout "60s"
+        :onclick "~/.config/eww/iceberg/bar/scripts/widgets toggle-sys ; ~/.config/hypr/scripts/imcp-full"
+        (image
+          :path "/home/guest/.icons/Windows-7-master/devices/camera-photo.png"
+          :image-height 25)))))
+
+(deflisten wifi "scripts/sys wifi")
+(deflisten air "scripts/sys air")
+(deflisten dnd "scripts/sys dnd")
+(deflisten night "scripts/sys night")
+(deflisten blue "scripts/sys blue")
+
+(defwidget media[]
+  (box :class "media"
+       :orientation "v"
+    (box :class "media-controls"
+         :orientation "h"
+         :space-evenly false
+         :spacing 15
+      (box :class "media-overview"
+           :orientation "v"
+           :hexpand true
+        (label :class "media-title" :halign "start" :limit-width 15 :text media-title)
+        (label :class "media-artist" :halign "start" :text media-artist)
+        (box
+          (scale :class "media-track" :min 0 :max 101 :value media-track :active false)
+          (label :class "media-time" :halign "end" :text media-time)))
+      (box :class "media-playback"
+           :orientation "v"
+           :halign "end"
+        (button :class "media-prev" :onclick "scripts/media prev" "")
+        (button :class "media-toggle ${media-toggle-class}" :onclick "scripts/media toggle" media-toggle-icon)
+        (button :class "media-next" :onclick "scripts/media next" "")))))
+
+(defpoll media-title :interval "1s" "scripts/media title")
+(defpoll media-artist :interval "1s" "scripts/media artist")
+(defpoll media-time :interval "1s" "scripts/media time")
+(defpoll media-track :interval "1s" "scripts/media percent")
+(deflisten media-toggle-icon "scripts/media icon")
+(deflisten media-toggle-class "scripts/media class")
+
+
+(deflisten vol-val :initial 0 "../common/scripts/vol follow")
+(defpoll vol-icon  :initial "" :interval "1s" "../common/scripts/vol icon")
+
+(deflisten mic-val :initial 0 "../common/scripts/mic follow")
+(defpoll mic-icon :interval "1s" "../common/scripts/mic icon")
+
+(deflisten bright-val :initial 0 "../common/scripts/bright follow")
+
+(defwidget powermenu[]
+  (box :class "powermenu"
+    (button :class "power-lock" :onclick "../common/scripts/power lock" :tooltip "Lock" 
+	(image
+	  :path "/home/guest/.icons/Windows-7-master/actions/lock.png"
+	  :image-height 25))
+    (button :class "power-hibernate" :onclick "../common/scripts/power hibernate" :tooltip "Hibernate" 
+	(image
+	  :path "/home/guest/.icons/Windows-7-master/actions/hibernate.png"
+	  :image-height 25))
+    (button :class "power-reboot" :onclick "../common/scripts/power reboot" :tooltip "Restart" 
+	(image
+	  :path "/home/guest/.icons/Windows-7-master/actions/un-reboot.png"
+	  :image-height 25))
+    (button :class "power-shutdown" :onclick "../common/scripts/power shutdown" :tooltip "Shutdown" 
+	(image
+          :path "/home/guest/.icons/Windows-7-master/actions/system-shutdown.png"
+          :image-height 25))
+    ))
+(defwindow sys-menu0                                                                                                                                                                  
+   :monitor 0                                                                                                                                                                           
+   :stacking "fg"                                                                                                                                                                       
+   :geometry (geometry :x "6px" :y "6px" :width "2px" :anchor "top left")                                                                                                               
+   (sys-menu-main))   
+(defwindow sys-menu1 
+  :monitor 1
+  :stacking "fg"
+  :geometry (geometry :x "6px" :y "6px" :width "2px" :anchor "top left")
+  (sys-menu-main))
+

@@ -1,0 +1,252 @@
+#!/bin/bash
+
+CACHE_DIR="$HOME/.cache/eww"
+PID_FILE="$HOME/.cache/sys.pid" 
+
+function restore() {
+	[ -f "$CACHE_DIR/night.lock" ] && gammastep -P -O 5000 || killall gammastep
+	[ $(dunstctl is-paused) = "true" ] && dunstctl set-paused true || dunstctl set-paused false
+}
+
+function wifioff() {
+	~/play wifioff & nmcli r wifi off
+}
+
+function toggle_wifi() {
+	[ $(nmcli r wifi) = "enabled" ] && wifioff || ~/play wifi & nmcli r wifi on
+}
+
+function follow_wifi() {
+	[ $(nmcli r wifi) = "enabled" ] && local status="on" || local status="off"
+	[ $status = "on" ] && local ico="" || local ico=""
+	echo "{\"state\":\"$status\",\"icon\":\"$ico\"}"
+	while sleep 0.1; do
+		[ $(nmcli r wifi) = "enabled" ] && local ns="on" || local ns="off"
+		if [ $status != $ns ];then
+			status=$ns
+			[ $status = "on" ] && local ico="" || local ico=""
+			echo "{\"state\":\"$status\",\"icon\":\"$ico\"}"
+		fi
+	done
+}
+
+function toggle_air() {
+	[ -f "$CACHE_DIR/air.lock" ] && rm "$CACHE_DIR/air.lock" || touch "$CACHE_DIR/air.lock"
+	if [ -f "$CACHE_DIR/air.lock" ];then
+		rfkill block wlan
+		rfkill block bluetooth
+		~/play error2 &
+	else
+		rfkill unblock wlan
+		rfkill unblock bluetooth
+	fi
+}
+
+function follow_air() {
+	[ -f "$CACHE_DIR/air.lock" ] && local status="on" || local status="off"
+	[ $status = "on" ] && local ico="" || local ico=""
+	echo "{\"state\":\"$status\",\"icon\":\"$ico\"}"
+	while sleep 0.1; do
+		[ -f "$CACHE_DIR/air.lock" ] && local ns="on" || local ns="off"
+		if [ $status != $ns ];then
+			status=$ns
+			[ $status = "on" ] && local ico="" || local ico=""
+			echo "{\"state\":\"$status\",\"icon\":\"$ico\"}"
+		fi
+	done
+}
+
+function toggle_dnd() {
+	[ $(dunstctl is-paused) = "true" ] && dunstctl set-paused false || dunstctl set-paused true
+}
+
+function follow_dnd() {
+	[ $(dunstctl is-paused) = "true" ] && local status="on" || local status="off"
+	[ $status = "on" ] && local ico="" || local ico=""
+	echo "{\"state\":\"$status\",\"icon\":\"$ico\"}"
+	while sleep 0.1; do
+		[ $(dunstctl is-paused) = "true" ] && local ns="on" || local ns="off"
+		if [ $status != $ns ];then
+			status=$ns
+			[ $status = "on" ] && local ico="" || local ico=""
+			echo "{\"state\":\"$status\",\"icon\":\"$ico\"}"
+		fi
+	done
+}
+
+function toggle_night() {
+  [ -f "$CACHE_DIR/night.lock" ] && rm "$CACHE_DIR/night.lock" || touch "$CACHE_DIR/night.lock"
+  ~/play other1 &
+  [ -f "$CACHE_DIR/night.lock" ] && gammastep -P -O 5000 || killall gammastep
+  #brave https://youtu.be/dQw4w9WgXcQ
+}
+
+function follow_night() {
+	[ -f "$CACHE_DIR/night.lock" ] && local status="on" || local status="off"
+	[ $status = "on" ] && local ico="" || local ico=""
+	echo "{\"state\":\"$status\",\"icon\":\"$ico\"}"
+	while sleep 0.1; do
+		[ -f "$CACHE_DIR/night.lock" ] && local ns="on" || local ns="off"
+		if [ $status != $ns ];then
+			status=$ns
+			[ $status = "on" ] && local ico="" || local ico=""
+			echo "{\"state\":\"$status\",\"icon\":\"$ico\"}"
+		fi
+	done
+}
+
+function toggle_blue() {
+	[ -f "$CACHE_DIR/blue.lock" ] && rm "$CACHE_DIR/blue.lock" || touch "$CACHE_DIR/blue.lock"
+	if [ -f "$CACHE_DIR/blue.lock" ]; then
+		~/play blo &
+		bluetoothctl power off 
+	else
+		~/play bl &
+		bluetoothctl power on
+	fi
+}
+
+function follow_blue() {
+	[ -f "$CACHE_DIR/blue.lock" ] && local status="off" || local status="on"
+	[ $status = "on" ] && local ico="" || local ico=""
+	echo "{\"state\":\"$status\",\"icon\":\"$ico\"}"
+	while sleep 0.1; do
+		[ -f "$CACHE_DIR/blue.lock" ] && local ns="off" || local ns="on"
+		if [ $status != $ns ];then
+			status=$ns
+			[ $status = "on" ] && local ico="" || local ico=""
+			echo "{\"state\":\"$status\",\"icon\":\"$ico\"}"
+		fi
+	done
+}
+
+function disable_buckle() {
+	rm "$CACHE_DIR/buckle.lock" 
+	killall buckle >/dev/null 2>&1
+	~/play disable
+}
+
+function enable_buckle() {
+	touch "$CACHE_DIR/buckle.lock"
+	~/.config/hypr/scripts/buckle.sh & disown
+	~/play enable
+}
+
+function toggle_buckle() {
+	[ -f "$CACHE_DIR/buckle.lock" ] && disable_buckle || enable_buckle
+}
+
+function follow_buckle() {
+	[ -f "$CACHE_DIR/buckle.lock" ] && local status="off" || local status="on"
+	echo "{\"state\":\"$status\"}"
+	while sleep 0.1; do
+		[ -f "$CACHE_DIR/buckle.lock" ] && local ns="off" || local ns="on"
+		if [ $status != $ns ];then
+			status=$ns
+			echo "{\"state\":\"$status\"}"
+		fi
+	done	
+} 
+
+function toggle_music() {
+	if [ -f "$CACHE_DIR/music.lock" ]; then 
+		rm "$CACHE_DIR/music.lock"
+  		running=true
+	        trap "running=false" SIGUSR1
+		touch "$PID_FILE"
+  		echo $$ > "$PID_FILE" 
+		~/play enable &
+		~/play menu_intro 25000
+		while $running; do
+			~/play menu_lp 25000
+		done
+	else
+		touch "$CACHE_DIR/music.lock"
+		if [ -f "$PID_FILE" ]; then
+			pid=$(cat "$PID_FILE")
+			kill -SIGUSR1 "$pid"
+			rm "$PID_FILE"
+		else
+			echo "PID file not found. Is the loop running?"
+		fi
+		killall paplay
+		~/play disable
+	fi
+}
+
+function follow_music() {
+	[ -f "$CACHE_DIR/music.lock" ] && local status="off" || local status="on"
+	echo "{\"state\":\"$status\"}"
+	while sleep 0.1; do
+		[ -f "$CACHE_DIR/music.lock" ] && local ns="off" || local ns="on"
+		if [ $status != $ns ];then
+			status=$ns
+			echo "{\"state\":\"$status\"}"
+		fi
+	done	
+} 
+
+function follow_play() {
+	[ -f "$CACHE_DIR/sfx.lock" ] && local status="off" || local status="on"
+	echo "{\"state\":\"$status\"}"
+	while sleep 0.1; do
+		[ -f "$CACHE_DIR/sfx.lock" ] && local ns="off" || local ns="on"
+		if [ $status != $ns ];then
+			status=$ns
+			echo "{\"state\":\"$status\"}"
+		fi
+	done	
+}
+
+function follow_vol() {
+	low=32000
+	mid=52412
+	cv=$(cat ~/vol)
+	prev=cv
+	while true; do	
+		cv=$(cat ~/vol)
+		if [ "$cv" != "$prev" ]; then
+			if [ "$cv" -le "$low" ]; then
+				echo "{\"path\":\"/home/guest/.icons/Windows-7-master/status/18/stock_volume-min.png\"}"
+			elif [ "$cv" -le "$mid" ]; then
+				echo "{\"path\":\"/home/guest/.icons/Windows-7-master/status/18/audio-volume-medium.png\"}"
+			elif [ "$cv" -le "65536" ]; then
+				echo "{\"path\":\"/home/guest/.icons/Windows-7-master/status/18/stock_volume-max.png\"}"	
+			fi
+		fi
+		prev=cv
+		sleep 0.1
+	done
+}
+
+function screenshot() {
+	eww -c "$HOME/.config/eww/iceberg/menu" close sys-menu
+	sleep 0.2
+	#flameshot gui
+  ~/.config/hypr/scripts/imcp
+}
+
+
+case "$1" in
+	"toggle-wifi") toggle_wifi;;
+	"toggle-blue") toggle_blue;;
+	"toggle-air") toggle_air;;
+	"toggle-dnd") toggle_dnd;;
+	"toggle-night") toggle_night;;
+	"screenshot") screenshot;;
+	"toggle-blue") toggle_blue;;
+	"wifi") follow_wifi;;
+	"air") follow_air;;
+	"dnd") follow_dnd;;
+	"night") follow_night;;
+	"blue") follow_blue;;
+	"toggle-buckle") toggle_buckle;;
+	"buckle") follow_buckle;;
+	"toggle-music") toggle_music;;
+	"music") follow_music;;
+	"play") follow_play;;
+	"vol") follow_vol;;
+	"restore") restore;;
+	*) echo "unknown command";;
+esac
+

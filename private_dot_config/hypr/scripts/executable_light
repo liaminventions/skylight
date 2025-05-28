@@ -1,0 +1,16 @@
+#!/bin/bash
+
+function down(){
+  ~/play bd &
+  for i in `seq 5`; do brightnessctl s 1%- -q && sleep 0.02; done
+}
+function up(){
+  ~/play bu &
+  for i in `seq 5`; do brightnessctl s +1% -q && sleep 0.02; done
+}
+
+case "$1" in
+  "down") down;;
+  "up") up;;
+  *) echo "unknown command";;
+esac

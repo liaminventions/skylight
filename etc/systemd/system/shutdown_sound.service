@@ -1,0 +1,10 @@
+[Unit]
+Description=shutdown Sound
+
+[Service]
+RemainAfterExit=true
+ExecStart=/bin/true
+ExecStop=/usr/bin/shutdownsfx
+
+[Install]
+WantedBy=graphical.target

@@ -1,0 +1,4 @@
+# usb sounds
+ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", RUN+="/home/guest/usb_sound.sh add"
+ACTION=="remove", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", RUN+="/home/guest/usb_sound.sh remove"
+

@@ -1,0 +1,21 @@
+(defwidget v-iconmeter[name min max val icon ?active ?onclick ?onchange ?pointer]
+  (box :class "${name}-box"
+       :space-evenly false
+        :orientation "v"
+    (scale :class "${name}-scale" :orientation "v" :active {active ?: true} :flipped true :min min :max max :onchange onchange :value {val})
+    (eventbox :class "${name}-eventbox"
+              :onclick onclick
+      (label :class "${name}-icon" :text icon))))
+
+(defwidget v-imagemeter[name min max val path ?active ?onclick ?onchange ?pointer]
+  (box :class "${name}-box"
+       :space-evenly false
+        :orientation "v"
+    (scale :class "${name}-scale" :orientation "v" :active {active ?: true} :flipped true :min min :max max :onchange onchange :value {val})
+    (eventbox :class "${name}-eventbox"
+              :onclick onclick
+      (image
+	:class "${name}-icon"
+        :path path
+        :image-height 25))))
+

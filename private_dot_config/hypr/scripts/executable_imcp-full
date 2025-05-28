@@ -1,0 +1,21 @@
+#!/bin/sh
+date=$(date +%Y%m%d-%H%M%S)
+date+="$(hostname)"
+if [ ! -f ~/.cache/eww/chem.lock ]; then
+  FILE=$HOME/Pictures/Screenshots/chem/"$date".png
+elif [ ! -f ~/.cache/eww/math.lock ]; then
+  FILE=$HOME/Pictures/Screenshots/math/"$date".png
+elif [ ! -f ~/.cache/eww/gov.lock ]; then
+  FILE=$HOME/Pictures/Screenshots/gov/${date}.png
+elif [ ! -f ~/.cache/eww/codehs.lock ]; then
+  FILE=$HOME/Pictures/Screenshots/codehs/${date}.png
+else
+  FILE=$HOME/Pictures/Screenshots/${date}.png
+fi
+#grimblast --freeze copysave screen $FILE
+paplay ~/.config/hypr/sounds/photo.ogg &
+grim $FILE && wl-copy < $FILE &
+rm /home/guest/.cache/eww/sfx.lock
+python3 ~/scr.py
+sleep 0.2
+touch ~/.cache/eww/sfx.lock

@@ -1,0 +1,35 @@
+#!/bin/sh
+set -ex
+CACHE_DIR="/home/guest/.cache/eww"
+
+toggle() {
+	if [ -f "$CACHE_DIR/sfx.lock" ]; then
+		rm "$CACHE_DIR/sfx.lock" 
+	else
+		touch "$CACHE_DIR/sfx.lock"    
+		paplay --volume=$(cat /home/guest/vol) /home/guest/.config/hypr/sounds/enable.ogg
+	fi
+}
+
+p() {
+	SOUND="$1"
+	CUSTOM_VOLUME="$2"
+
+	if [ -f "$CACHE_DIR/sfx.lock" ]; then
+		if [ -n "$CUSTOM_VOLUME" ]; then
+			MAX_VOLUME=$(cat /home/guest/vol)
+			# Scale the custom volume (0–65535) to the max volume
+			SCALED_VOLUME=$(awk -v v="$CUSTOM_VOLUME" -v max="$MAX_VOLUME" 'BEGIN { printf "%d", (v / 65535.0) * max }')
+			paplay --volume="$SCALED_VOLUME" /home/guest/.config/hypr/sounds/"$SOUND".ogg
+		else
+			paplay --volume=$(cat /home/guest/vol) /home/guest/.config/hypr/sounds/"$SOUND".ogg
+		fi
+	else
+		/bin/true
+	fi
+}
+
+case "$1" in
+	"toggle") toggle;;
+	*) p "$1" "$2";;
+esac

@@ -1,0 +1,294 @@
+@define-color accent_color #20d0fc;
+
+@keyframes gradient_f {
+	0% {
+		background-position: 0% 200%;
+	}
+    50% {
+        background-position: 200% 0%;
+    }
+	100% {
+		background-position: 400% 200%;
+	}
+}
+
+
+* { 
+  all: unset; 
+  border: none;
+  border-radius: 8;
+  min-height: 0;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  background: transparent;
+}
+
+.sys-menu {
+	padding: 1rem 1rem 0 1rem;
+	background-image: linear-gradient(to bottom, rgba(240,240,240,0.15)0%, rgba(125,125,125,0.7)50%, rgba(0,0,0,0.7)80%);
+	border-width: 1px;
+	border-style: solid;
+	border-color: rgba(0,0,0,0.45);
+}
+
+.user {
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(0,0,0,0.025));
+  box-shadow: 0px 0px 3px rgba(0,0,0,0.34);
+  margin: 4px;                                                                           
+  padding: 4px 8px;                                                                      
+  border-radius: 8px;                                                                    
+  color: #ffffff;
+  border-style: none;
+  border-bottom-style: solid;                                                            
+  border-top-style: solid;                                                               
+  border-bottom-color: rgba(255,255,255,0.15);                                           
+  border-top-color: rgba(255,255,255,0.45);                                              
+  border-width: 1px;     
+}
+
+.user-pfp {
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	padding: 0.25rem;
+	margin: 0.5rem;
+        margin-right: 0rem;
+        margin-left: 0rem;
+	border-radius: 16px;
+	min-width: 80px;
+	min-height: 80px;
+}
+
+.user-name {
+	text-shadow: 2px 2px 5px black;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.user-uptime, .user-pkgs, .user-pkgs-flatpak {
+    padding-top: 2px;
+	font-size: 16px;
+	color: $light-gray;
+}
+
+.sys-btns {
+	color: #B8BDC9;
+
+	button {
+		box-shadow: 0px 0px 3px rgba(0,0,0,0.34);
+		margin: 4px;
+		padding: 4px 12px;
+		border-radius: 8px;
+		color: rgb(220,220,220);
+
+		border-style: none;
+		border-bottom-style: solid;
+		border-top-style: solid;
+		border-bottom-color: rgba(255,255,255,0.15);
+		border-top-color: rgba(255,255,255,0.45);
+		border-width: 1px;
+	}
+
+	button:hover {
+		border-style: none;
+		border-bottom-style: solid;
+		border-top-style: solid;
+		border-bottom-color: rgba(128,128,128,0.45);
+		border-top-color: rgba(128,128,128,0.45);
+		border-width: 1px;
+	}
+
+	.wifi-off, .air-off, .night-off, .blue-off {
+		background-image: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(0,0,0,0.025));
+	}
+
+	.scr, .launch
+	{
+		background-image: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(0,0,0,0.025));
+		box-shadow: 0px 0px 3px rgba(0,0,0,0.34);
+		margin: 4px;
+		padding: 4px 12px;
+		border-radius: 8px;
+		color: rgb(220,220,220);
+
+		border-style: none;
+		border-bottom-style: solid;
+		border-top-style: solid;
+		border-bottom-color: rgba(255,255,255,0.15);
+		border-top-color: rgba(255,255,255,0.45);
+		border-width: 1px;
+	}
+	.scr:active, .launch:active
+	{
+		background-image: none;
+	}
+}
+
+.usr-btns {
+	color: #B8BDC9;
+
+	button {
+		box-shadow: 0px 0px 3px rgba(0,0,0,0.34);
+		margin: 4px;
+		padding: 4px 12px;
+		border-radius: 8px;
+		color: rgb(220,220,220);
+
+		border-style: none;
+		border-bottom-style: solid;
+		border-top-style: solid;
+		border-bottom-color: rgba(255,255,255,0.15);
+		border-top-color: rgba(255,255,255,0.45);
+		border-width: 1px;
+	}
+
+	button:hover {
+		border-style: none;
+		border-bottom-style: solid;
+		border-top-style: solid;
+		border-bottom-color: rgba(128,128,128,0.45);
+		border-top-color: rgba(128,128,128,0.45);
+		border-width: 1px;
+	}
+
+	.buckle-on, .play-on, .music-off
+        {
+		background-image: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(0,0,0,0.025));
+	}
+
+	.vol
+	{
+		background-image: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(0,0,0,0.025));
+		box-shadow: 0px 0px 3px rgba(0,0,0,0.34);
+		margin: 4px;
+		padding: 4px 12px;
+		border-radius: 8px;
+		color: rgb(220,220,220);
+
+		border-style: none;
+		border-bottom-style: solid;
+		border-top-style: solid;
+		border-bottom-color: rgba(255,255,255,0.15);
+		border-top-color: rgba(255,255,255,0.45);
+		border-width: 1px;
+	}
+	.vol:active
+	{
+		background-image: none;
+	}
+}
+
+
+.stats {
+	border-radius: 8px;
+	padding: 1rem;
+}
+
+scale.ram-scale trough, scale.cpu-scale trough, scale.dsk-scale trough {
+	all: unset;
+	background-image: linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.025));
+	border-radius: 8px;
+	min-height: 80px;
+	min-width: 15px;
+}
+
+.ram-scale trough highlight {
+	background-image: linear-gradient(to right, rgba(#bfe3fe,1)0%, rgba(#52b3fe,1)25%, rgba(#52b3fe,0.6)80%);
+	border-radius: 8px;
+}
+
+.cpu-scale trough highlight {
+	background-image: linear-gradient(to right, rgba(#bffece,1)0%, rgba(#bffece,1)25%, rgba(#2bff62,0.6)80%);
+	border-radius: 8px;
+}
+
+.dsk-scale trough highlight {
+	background-image: linear-gradient(to right, rgba(#ffbaba,1)0%, rgba(#ff5252,1)25%, rgba(#ff5252,0.6)80%);
+	border-radius: 8px;
+}
+
+.ram-icon, .cpu-icon, .dsk-icon {
+	padding: 1rem 0 0 0;
+}
+
+
+.updates {
+	color: $dark-gray;
+	background-color: $mint;
+	border-radius: 8px;
+}
+
+.powermenu {
+	font-size: 16px;
+	background-image: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(0,0,0,0.025));
+	box-shadow: 0px 0px 3px rgba(0,0,0,0.34);
+	margin: 4px;
+
+	border-radius: 8px;
+	color: rgb(220,220,220);
+
+	/* Important style feature in order to give a glassy look! */
+	/* I'm using the top and bottom borders to mimic highlights in highly reflective surfaces, looks good with the glassy-look */
+	border-style: none;
+	border-bottom-style: solid;
+	border-top-style: solid;
+	border-bottom-color: rgba(255,255,255,0.15);
+	border-top-color: rgba(255,255,255,0.45);
+	border-width: 1px;
+	border-radius: 8px;
+	margin-bottom: 1rem;
+}
+
+.powermenu > button {
+	padding: 1rem;
+	border: 1px solid rgba(128,128,128,0.25);
+	border-radius: 0px;
+}
+
+.powermenu button:first-child {
+	border-radius: 8px 0 0 8px;
+}
+
+.powermenu button:last-child {
+	border-radius: 0 8px 8px 0;
+}
+
+.power-lock:hover,
+.power-hibernate:hover,
+.power-reboot:hover,
+.power-shutdown:hover
+{
+	box-shadow: 0px 0px 3px rgba(0,0,0,0.34);
+	border-radius: 8px;
+	color: rgb(220,220,220);
+	border-style: none;
+	border-bottom-style: solid;
+	border-top-style: solid;
+	border-bottom-color: rgba(255,255,255,0.15);
+	border-top-color: rgba(255,255,255,0.45);
+	border-width: 1px;
+	color: #ffffff;
+}
+
+.power-lock:hover {
+	background-image: linear-gradient(to bottom, $blue, rgba(0,0,0,0.025));
+	transition-duration: 120ms;
+}
+
+.power-hibernate:hover {
+	background-image: linear-gradient(to bottom, $blue, rgba(0,0,0,0.025));
+	transition-duration: 120ms;
+}
+
+.power-reboot:hover {
+	background-image: linear-gradient(to bottom, $green, rgba(0,0,0,0.025));
+	transition-duration: 120ms;
+}
+
+.power-shutdown:hover {
+	background-image: linear-gradient(to bottom, $red, rgba(0,0,0,0.025));
+	transition-duration: 120ms;
+}
