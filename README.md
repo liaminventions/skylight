@@ -1,7 +1,8 @@
 
 # skylight  
 ![](https://raw.githubusercontent.com/liaminventions/skylight/refs/heads/main/images/example.png?token=GHSAT0AAAAAADEUWVVRVWODCELT7DVSZFHI2BXIM7A)
-![](https://github.com/liaminventions/skylight/raw/refs/heads/main/example.mp4)
+
+https://github.com/user-attachments/assets/144a870a-610a-410d-8517-c46b155c8d56
 
 A Frutiger-Aero style Linux rice.
 Credits to diinki's frutiger aero rice for some css styles and configs.
@@ -139,7 +140,7 @@ to do this, go to pavucontrol and to the "Recording" tab (while screen recording
 
 for example:
 
-![](https://raw.githubusercontent.com/liaminventions/skylight/main/images/pa.png)
+![](https://github.com/liaminventions/skylight/blob/main/images/pa.png?raw=true)
 
 also, you only have to do this once, the settings will save. 
 
