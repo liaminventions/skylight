@@ -20,7 +20,7 @@ managed by [chezmoi](https://github.com/twpayne/chezmoi).
 ## get required software
 these packages need to be installed: (some of which is from the AUR)
 ```
-Hyprland waybar kitty wofi eww swaylock-effects ttf-font-awesome ttf-roboto-mono ttf-roboto-mono-nerd zsh pulseaudio pavucontrol nwg-look nwg-displays librewolf networkmanager network-manager-applet bluez blueman swww dunst sddm sddm-conf-git btop wf-recorder grim slurp grimblast
+waybar hyprland kitty wofi eww swaylock-effects ttf-font-awesome ttf-roboto-mono ttf-roboto-mono-nerd zsh pulseaudio pavucontrol nwg-look nwg-displays librewolf networkmanager network-manager-applet bluez blueman swww dunst sddm sddm-conf-git btop wf-recorder grim slurp grimblast
 ```
 
 ## clone repo
