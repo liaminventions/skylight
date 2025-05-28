@@ -44,6 +44,20 @@ run
 chezmoi apply
 ```
 
+## sddm 
+
+to enable sddm, run:
+```
+sudo systemctl enable sddm
+```
+now set the theme. this can be done using sddm-conf.
+
+go to `Theme` and set the theme to `elarun` (closest to frutiger aesthetic)
+
+![](https://github.com/liaminventions/skylight/blob/main/images/sddm.png?raw=true)
+
+press `Save`, exit the app, and reboot
+
 ## system-wide folders
 
 this repo contains `usr` and `etc` directories.
