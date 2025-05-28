@@ -1,11 +1,11 @@
 
 # skylight  
-![](https://raw.githubusercontent.com/liaminventions/skylight/refs/heads/main/images/example.png?token=GHSAT0AAAAAADEUWVVRVWODCELT7DVSZFHI2BXIM7A)
+![](https://github.com/liaminventions/skylight/blob/main/images/example.png?raw=true)
 
 https://github.com/user-attachments/assets/144a870a-610a-410d-8517-c46b155c8d56
 
 A Frutiger-Aero style Linux rice.
-Credits to diinki's frutiger aero rice for some css styles and configs.
+Credits to [diinki's frutiger aero rice](https://github.com/diinki/diinki-aero) for some css styles and configs.
 
 managed by [chezmoi](https://github.com/twpayne/chezmoi).
 
