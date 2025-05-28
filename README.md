@@ -64,6 +64,7 @@ it also contains `99-device-hooks.rules`, which plays sounds when you insert/rem
 to enable this, run 
 
 ```
+sudo chown root:root ~/usb_sound.sh
 sudo udevadm control --reload
 sudo udevadm trigger
 ```
